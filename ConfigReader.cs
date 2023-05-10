@@ -9,7 +9,7 @@ using CsvHelper;
 
 namespace PowerOutageNotifier
 {
-    public class UserDataReader
+    public class ConfigReader
     {
         /// <summary>
         /// Example file structure:
