@@ -67,47 +67,6 @@ namespace PowerOutageNotifier
             await botClient.SendTextMessageAsync(chatId, message);
         }
 
-        /// <summary>
-        /// Checks for power outage and sends a notification.
-        /// </summary>
-        private void CheckAndNotifyPowerOutage()
-        {
-            using (System.Net.WebClient webClient = new System.Net.WebClient())
-            {
-                webClient.Encoding = Encoding.UTF8;
-
-                // The old and correct website
-                List<string> webpages = new List<string>
-                {
-                    webClient.DownloadString("http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_0_Iskljucenja.htm"),
-                    webClient.DownloadString("http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_1_Iskljucenja.htm"),
-                    webClient.DownloadString("http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_2_Iskljucenja.htm"),
-                    webClient.DownloadString("http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_3_Iskljucenja.htm"),
-                };
-
-                foreach (string webpage in webpages)
-                {
-                    if (webpage.Contains(userData.First().StreetName))
-                    {
-                        int daysLeftUntilOutage = webpages.IndexOf(webpage);
-
-                        SendMessageAsync(userData.First().ChatId, $"Power outage in {daysLeftUntilOutage} days.")
-                            .GetAwaiter().GetResult();
-                    }
-                }
-
-                // The new website which always lacks data
-                /*
-                string newWebsite = webClient.DownloadString("http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_0_Iskljucenja.htm");
-                if (newWebsite.Contains(streetName))
-                {
-                    SendMessageAsync(telegramChatIdAjanko, $"Power outage in UNDEFINED days.")
-                        .GetAwaiter().GetResult();
-                }
-                */
-            }
-        }
-
         private static void CheckAndNotifyPowerOutageV2()
         {
             foreach (string url in urls)
