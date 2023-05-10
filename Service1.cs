@@ -16,30 +16,7 @@ namespace PowerOutageNotifier
     {
         private static readonly string telegramBotToken = "6101873824:AAERozc6BX-Im46S5-fc_SPl9qzAmrNBRUA";
 
-        public static readonly List<UserData> userData = new List<UserData>()
-            {
-                new UserData()
-                {
-                    FriendlyName = "Ajanko",
-                    ChatId = 67903798,
-                    DistrictName = "Нови Београд",
-                    StreetName = "ПАРИСКЕ КОМУНЕ",
-                },
-                new UserData()
-                {
-                    FriendlyName = "Tata",
-                    ChatId = 434527744,
-                    DistrictName = "Вождовац",
-                    StreetName = "БОРИСАВЉЕВИЋЕВА",
-                },
-                new UserData()
-                {
-                    FriendlyName = "PositiveTest",
-                    ChatId = 67903798,
-                    DistrictName = "Палилула",
-                    StreetName = "САВЕ МРКАЉА",
-                },
-            };
+        public static readonly List<UserData> userData = UserDataReader.ReadUserData();
 
         // URLs of the web page to scrape
         private static readonly List<string> urls = new List<string>
