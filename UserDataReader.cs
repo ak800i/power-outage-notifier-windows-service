@@ -36,7 +36,7 @@ namespace PowerOutageNotifier
             using (var writer = new StreamWriter(csvFilePath))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
-                csv.WriteRecords(Service1.userData);
+                csv.WriteRecords(Service1.userDataList);
             }
         }
     }

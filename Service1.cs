@@ -16,7 +16,7 @@ namespace PowerOutageNotifier
     {
         private static readonly string telegramBotToken = "6101873824:AAERozc6BX-Im46S5-fc_SPl9qzAmrNBRUA";
 
-        public static readonly List<UserData> userData = UserDataReader.ReadUserData();
+        public static readonly List<UserData> userDataList = UserDataReader.ReadUserData();
 
         // URLs of the web page to scrape
         private static readonly List<string> urls = new List<string>
@@ -86,7 +86,7 @@ namespace PowerOutageNotifier
                         // Get the street name from the second cell
                         string streets = cells[2].InnerText.Trim();
 
-                        foreach (var user in userData)
+                        foreach (var user in userDataList)
                         {
                             // Check if the street name occurs in the same row as the correct district name
                             if (district == user.DistrictName && streets.Contains(user.StreetName))
