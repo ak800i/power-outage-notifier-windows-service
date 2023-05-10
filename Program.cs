@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -14,6 +15,8 @@ namespace PowerOutageNotifier
         /// </summary>
         static void Main()
         {
+            Test();
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
