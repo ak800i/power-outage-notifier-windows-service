@@ -35,19 +35,21 @@ namespace PowerOutageNotifier
         protected override void OnStart(string[] args)
         {
             SendMessageAsync(userDataList.First().ChatId, "Service running").GetAwaiter().GetResult();
-
-            while (true)
+            Task.Run(() =>
             {
-                try
+                while (true)
                 {
-                    CheckAndNotifyPowerOutage();
-                    Thread.Sleep(TimeSpan.FromHours(1));
-                }
-                catch (Exception)
-                {
+                    try
+                    {
+                        CheckAndNotifyPowerOutage();
+                        Thread.Sleep(TimeSpan.FromHours(1));
+                    }
+                    catch (Exception)
+                    {
                         // just continue
+                    }
                 }
-            }
+            });
         }
 
         protected override void OnStop()
