@@ -34,6 +34,8 @@ namespace PowerOutageNotifier
 
         protected override void OnStart(string[] args)
         {
+            SendMessageAsync(userDataList.First().ChatId, "Service running").GetAwaiter().GetResult();
+
             while (true)
             {
                 try
@@ -41,7 +43,7 @@ namespace PowerOutageNotifier
                     CheckAndNotifyPowerOutage();
                     Thread.Sleep(TimeSpan.FromHours(1));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                         // just continue
                 }
@@ -50,6 +52,7 @@ namespace PowerOutageNotifier
 
         protected override void OnStop()
         {
+            SendMessageAsync(userDataList.First().ChatId, "Service stopping").GetAwaiter().GetResult();
         }
 
         private static async Task SendMessageAsync(long chatId, string message)
