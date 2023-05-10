@@ -18,6 +18,7 @@ namespace PowerOutageNotifier
         /// PositiveTest,123456,Палилула,САВЕ МРКАЉА
         /// </summary>
         readonly static private string csvFilePath = @"C:\userdata.csv";
+        readonly static private string botTokenFilePath = @"C:\bot-token.txt";
 
         public static List<UserData> ReadUserData()
         {
@@ -31,13 +32,12 @@ namespace PowerOutageNotifier
             }
         }
 
-        public static void Write()
-        {
-            using (var writer = new StreamWriter(csvFilePath))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                csv.WriteRecords(Service1.userDataList);
-            }
-        }
+        /// <summary>
+        /// Example file structure:
+        /// 
+        /// 123456:AAAAAAA
+        /// </summary>
+        public static string ReadBotToken() =>
+            File.ReadAllText(botTokenFilePath);
     }
 }
