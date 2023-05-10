@@ -52,7 +52,7 @@ namespace PowerOutageNotifier
         {
         }
 
-        public static async Task SendMessageAsync(long chatId, string message)
+        private static async Task SendMessageAsync(long chatId, string message)
         {
             TelegramBotClient botClient = new TelegramBotClient(telegramBotToken);
             await botClient.SendTextMessageAsync(chatId, message);
