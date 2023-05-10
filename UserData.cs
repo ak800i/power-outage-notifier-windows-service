@@ -9,6 +9,5 @@
         public string DistrictName { get; set; }
 
         public string StreetName { get; set; }
-
     }
 }
