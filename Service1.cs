@@ -14,6 +14,8 @@ namespace PowerOutageNotifier
 {
     public partial class Service1 : ServiceBase
     {
+        private static readonly string telegramBotToken = ConfigReader.ReadBotToken();
+
         public static readonly List<UserData> userDataList = ConfigReader.ReadUserData();
 
         // URLs of the web page to scrape
