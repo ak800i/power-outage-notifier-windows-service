@@ -47,7 +47,7 @@ namespace PowerOutageNotifier
             {
                 try
                 {
-                    CheckAndNotifyPowerOutageV2();
+                    CheckAndNotifyPowerOutage();
                     Thread.Sleep(TimeSpan.FromHours(1));
                 }
                 catch (Exception ex)
@@ -67,7 +67,7 @@ namespace PowerOutageNotifier
             await botClient.SendTextMessageAsync(chatId, message);
         }
 
-        private static void CheckAndNotifyPowerOutageV2()
+        private static void CheckAndNotifyPowerOutage()
         {
             foreach (string url in urls)
             {
