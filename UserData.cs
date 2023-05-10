@@ -1,6 +1,6 @@
 ﻿namespace PowerOutageNotifier
 {
-    internal class UserData
+    public class UserData
     {
         public string FriendlyName { get; set; }
 

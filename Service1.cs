@@ -16,7 +16,7 @@ namespace PowerOutageNotifier
     {
         private static readonly string telegramBotToken = "6101873824:AAERozc6BX-Im46S5-fc_SPl9qzAmrNBRUA";
 
-        private static readonly List<UserData> userData = new List<UserData>()
+        public static readonly List<UserData> userData = new List<UserData>()
             {
                 new UserData()
                 {
@@ -24,7 +24,21 @@ namespace PowerOutageNotifier
                     ChatId = 67903798,
                     DistrictName = "Нови Београд",
                     StreetName = "ПАРИСКЕ КОМУНЕ",
-                }
+                },
+                new UserData()
+                {
+                    FriendlyName = "Tata",
+                    ChatId = 434527744,
+                    DistrictName = "Вождовац",
+                    StreetName = "БОРИСАВЉЕВИЋЕВА",
+                },
+                new UserData()
+                {
+                    FriendlyName = "PositiveTest",
+                    ChatId = 67903798,
+                    DistrictName = "Палилула",
+                    StreetName = "САВЕ МРКАЉА",
+                },
             };
 
         // URLs of the web page to scrape
@@ -67,7 +81,7 @@ namespace PowerOutageNotifier
             await botClient.SendTextMessageAsync(chatId, message);
         }
 
-        private static void CheckAndNotifyPowerOutage()
+        public static void CheckAndNotifyPowerOutage()
         {
             foreach (string url in urls)
             {
@@ -104,7 +118,7 @@ namespace PowerOutageNotifier
 
                                 int daysLeftUntilOutage = urls.IndexOf(url);
 
-                                SendMessageAsync(user.ChatId, $"Power outage in {daysLeftUntilOutage} days.")
+                                SendMessageAsync(user.ChatId, $"Power outage will occurr in {daysLeftUntilOutage} days in {user.DistrictName}, {user.StreetName}.")
                                     .GetAwaiter().GetResult();
 
                                 break; // You can exit the loop if the match is found

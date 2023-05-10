@@ -15,8 +15,6 @@ namespace PowerOutageNotifier
         /// </summary>
         static void Main()
         {
-            Test();
-
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
