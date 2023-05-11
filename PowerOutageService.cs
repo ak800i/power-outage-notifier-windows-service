@@ -14,7 +14,7 @@ using Telegram.Bot.Types;
 
 namespace PowerOutageNotifier
 {
-    public partial class Service1 : ServiceBase
+    public partial class PowerOutageService : ServiceBase
     {
         private static readonly string telegramBotToken = ConfigReader.ReadBotToken();
 
@@ -34,7 +34,7 @@ namespace PowerOutageNotifier
             "https://www.bvk.rs/planirani-radovi/",
         };
 
-        public Service1()
+        public PowerOutageService()
         {
             InitializeComponent();
         }

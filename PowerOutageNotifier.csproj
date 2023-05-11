@@ -87,11 +87,11 @@
     <Compile Include="MyServiceInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service1.cs">
+    <Compile Include="PowerOutageService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service1.Designer.cs">
-      <DependentUpon>Service1.cs</DependentUpon>
+    <Compile Include="PowerOutageService.Designer.cs">
+      <DependentUpon>PowerOutageService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
