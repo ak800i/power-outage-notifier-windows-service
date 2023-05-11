@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.ServiceProcess;
@@ -9,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types;
 
 namespace PowerOutageNotifier
 {
@@ -143,6 +145,50 @@ namespace PowerOutageNotifier
 
                                 SendMessageAsync(user.ChatId, $"Water outage might occurr in {user.DistrictName}, {user.StreetName}.\n{nodeText}")
                                     .GetAwaiter().GetResult();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void CheckAndNotifyUnplannedWaterOutage()
+        {
+            foreach (string url in waterOutageUrls)
+            {
+                // Create a new HtmlWeb instance
+                HtmlWeb web = new HtmlWeb();
+
+                // Load the HTML document from the specified URL
+                HtmlDocument document = web.Load(url);
+
+                HtmlNodeCollection divElements = document.DocumentNode.SelectNodes("//div[@class='toggle_content invers-color ' and @itemprop='text']");
+                if (divElements != null)
+                {
+                    foreach (HtmlNode divElement in divElements)
+                    {
+                        // Find the ul element within each div element
+                        HtmlNode ulElement = divElement.SelectSingleNode(".//ul");
+
+                        if (ulElement != null)
+                        {
+                            // Iterate through each li element within the ul element
+                            foreach (HtmlNode liElement in ulElement.Descendants("li"))
+                            {
+                                // Check for string occurrences
+                                string text = liElement.InnerText;
+
+                                foreach (var user in userDataList)
+                                {
+                                    // Example: Check for the string "example" in each li element
+                                    if (text.Contains(user.DistrictName) && text.Contains(user.StreetName))
+                                    {
+                                        Console.WriteLine($"Water outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
+
+                                        SendMessageAsync(user.ChatId, $"Water outage might be happening in {user.DistrictName}, {user.StreetName}.\n{text}")
+                                            .GetAwaiter().GetResult();
+                                    }
+                                }
                             }
                         }
                     }
