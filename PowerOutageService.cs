@@ -34,6 +34,11 @@ namespace PowerOutageNotifier
             "https://www.bvk.rs/planirani-radovi/",
         };
 
+        private static readonly List<string> waterUnplannedOutageUrls = new List<string>
+        {
+            "https://www.bvk.rs/kvarovi-na-mrezi/",
+        };
+
         public PowerOutageService()
         {
             InitializeComponent();
@@ -154,7 +159,7 @@ namespace PowerOutageNotifier
 
         public static void CheckAndNotifyUnplannedWaterOutage()
         {
-            foreach (string url in waterOutageUrls)
+            foreach (string url in waterUnplannedOutageUrls)
             {
                 // Create a new HtmlWeb instance
                 HtmlWeb web = new HtmlWeb();
