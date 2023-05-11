@@ -19,12 +19,17 @@ namespace PowerOutageNotifier
         public static readonly List<UserData> userDataList = ConfigReader.ReadUserData();
 
         // URLs of the web page to scrape
-        private static readonly List<string> urls = new List<string>
+        private static readonly List<string> powerOutageUrls = new List<string>
         {
             "http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_0_Iskljucenja.htm",
             "http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_1_Iskljucenja.htm",
             "http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_2_Iskljucenja.htm",
             "http://www.epsdistribucija.rs/planirana-iskljucenja-beograd/Dan_3_Iskljucenja.htm",
+        };
+
+        private static readonly List<string> waterOutageUrls = new List<string>
+        {
+            "https://www.bvk.rs/planirani-radovi/",
         };
 
         public Service1()
@@ -41,7 +46,8 @@ namespace PowerOutageNotifier
                 {
                     try
                     {
-                        CheckAndNotifyPowerOutage();
+                        Task.Run(CheckAndNotifyPowerOutage);
+                        Task.Run(CheckAndNotifyWaterOutage);
                         Thread.Sleep(TimeSpan.FromHours(1));
                     }
                     catch (Exception)
@@ -65,7 +71,7 @@ namespace PowerOutageNotifier
 
         public static void CheckAndNotifyPowerOutage()
         {
-            foreach (string url in urls)
+            foreach (string url in powerOutageUrls)
             {
                 // Create a new HtmlWeb instance
                 HtmlWeb web = new HtmlWeb();
@@ -96,14 +102,47 @@ namespace PowerOutageNotifier
                             // Check if the street name occurs in the same row as the correct district name
                             if (district == user.DistrictName && streets.Contains(user.StreetName))
                             {
-                                Console.WriteLine($"Outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
+                                Console.WriteLine($"Power outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
 
-                                int daysLeftUntilOutage = urls.IndexOf(url);
+                                int daysLeftUntilOutage = powerOutageUrls.IndexOf(url);
 
                                 SendMessageAsync(user.ChatId, $"Power outage will occurr in {daysLeftUntilOutage} days in {user.DistrictName}, {user.StreetName}.")
                                     .GetAwaiter().GetResult();
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-                                break; // You can exit the loop if the match is found
+        public static void CheckAndNotifyWaterOutage()
+        {
+            foreach (string url in waterOutageUrls)
+            {
+                // Create a new HtmlWeb instance
+                HtmlWeb web = new HtmlWeb();
+
+                // Load the HTML document from the specified URL
+                HtmlDocument document = web.Load(url);
+
+                HtmlNodeCollection workNodes = document.DocumentNode.SelectNodes("//div[contains(@class, 'toggle_content')]");
+                if (workNodes != null)
+                {
+                    foreach (HtmlNode workNode in workNodes)
+                    {
+                        string nodeText = workNode.InnerText;
+
+                        foreach (var user in userDataList)
+                        {
+                            string declinationRoot = user.StreetName.Substring(0, user.StreetName.Length - 2);
+
+                            // Check if the street name occurs in the same entry as the correct district name
+                            if (nodeText.Contains(user.DistrictName) && nodeText.Contains(declinationRoot))
+                            {
+                                Console.WriteLine($"Water outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
+
+                                SendMessageAsync(user.ChatId, $"Water outage might occurr in {user.DistrictName}, {user.StreetName}.\n{nodeText}")
+                                    .GetAwaiter().GetResult();
                             }
                         }
                     }
