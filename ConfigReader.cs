@@ -17,8 +17,8 @@ namespace PowerOutageNotifier
         /// Friendly Name,Chat ID,District Name,Street Name
         /// PositiveTest,123456,Палилула,САВЕ МРКАЉА
         /// </summary>
-        readonly static private string csvFilePath = @"C:\userdata.csv";
-        readonly static private string botTokenFilePath = @"C:\bot-token.txt";
+        readonly static private string csvFilePath = @"C:\Users\ajanko\OneDrive - Microsoft\Documents\userdata.csv";
+        readonly static private string botTokenFilePath = @"C:\Users\ajanko\OneDrive - Microsoft\Documents\bot-token.txt";
 
         public static List<UserData> ReadUserData()
         {
