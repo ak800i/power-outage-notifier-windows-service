@@ -62,7 +62,7 @@ namespace PowerOutageNotifier
 
         protected override void OnStop()
         {
-            SendMessageAsync(userDataList.First().ChatId, $"Service stoppingon {Environment.MachineName}").GetAwaiter().GetResult();
+            SendMessageAsync(userDataList.First().ChatId, $"Service stopping on {Environment.MachineName}").GetAwaiter().GetResult();
         }
 
         private static async Task SendMessageAsync(long chatId, string message)
