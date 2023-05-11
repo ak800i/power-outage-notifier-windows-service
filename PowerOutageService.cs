@@ -107,7 +107,8 @@ namespace PowerOutageNotifier
                         foreach (var user in userDataList)
                         {
                             // Check if the street name occurs in the same row as the correct district name
-                            if (district == user.DistrictName && streets.Contains(user.StreetName))
+                            if (district == user.DistrictName
+                                && streets.IndexOf(user.StreetName, StringComparison.OrdinalIgnoreCase) >= 0)
                             {
                                 Console.WriteLine($"Power outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
 
@@ -144,7 +145,8 @@ namespace PowerOutageNotifier
                             string declinationRoot = user.StreetName.Substring(0, user.StreetName.Length - 2);
 
                             // Check if the street name occurs in the same entry as the correct district name
-                            if (nodeText.Contains(user.DistrictName) && nodeText.Contains(declinationRoot))
+                            if (nodeText.IndexOf(user.DistrictName, StringComparison.OrdinalIgnoreCase) >= 0
+                                && nodeText.IndexOf(declinationRoot, StringComparison.OrdinalIgnoreCase) >= 0)
                             {
                                 Console.WriteLine($"Water outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
 
@@ -185,8 +187,9 @@ namespace PowerOutageNotifier
 
                                 foreach (var user in userDataList)
                                 {
-                                    // Example: Check for the string "example" in each li element
-                                    if (text.Contains(user.DistrictName) && text.Contains(user.StreetName))
+                                    // Example: Check for the string "example" in each li element (case-insensitive)
+                                    if (text.IndexOf(user.DistrictName, StringComparison.OrdinalIgnoreCase) >= 0
+                                        && text.IndexOf(user.StreetName, StringComparison.OrdinalIgnoreCase) >= 0)
                                     {
                                         Console.WriteLine($"Water outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
 
