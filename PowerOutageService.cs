@@ -58,9 +58,10 @@ namespace PowerOutageNotifier
                         Task.Run(CheckAndNotifyUnplannedWaterOutage);
                         Thread.Sleep(TimeSpan.FromHours(1));
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         // just continue
+                        SendMessageAsync(userDataList.First().ChatId, $"Exception {ex}").GetAwaiter().GetResult();
                     }
                 }
             });
@@ -111,11 +112,14 @@ namespace PowerOutageNotifier
                             if (district == user.DistrictName
                                 && streets.IndexOf(user.StreetName, StringComparison.OrdinalIgnoreCase) >= 0)
                             {
-                                Console.WriteLine($"Power outage detected. {user.FriendlyName}, {user.DistrictName}, {user.StreetName}, {user.ChatId}");
+                                string streetWithNumber = streets.Substring(streets.IndexOf(user.StreetName, StringComparison.OrdinalIgnoreCase));
+                                streetWithNumber = streetWithNumber.Substring(0, streets.IndexOf(','));
+
+                                Console.WriteLine($"Power outage detected. {user.FriendlyName}, {user.DistrictName}, {streetWithNumber}, {user.ChatId}");
 
                                 int daysLeftUntilOutage = powerOutageUrls.IndexOf(url);
 
-                                SendMessageAsync(user.ChatId, $"Power outage will occurr in {daysLeftUntilOutage} days in {user.DistrictName}, {user.StreetName}.")
+                                SendMessageAsync(user.ChatId, $"Power outage will occur in {daysLeftUntilOutage} days in {user.DistrictName}, {user.StreetName}.")
                                     .GetAwaiter().GetResult();
                             }
                         }
