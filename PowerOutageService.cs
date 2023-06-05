@@ -119,7 +119,7 @@ namespace PowerOutageNotifier
 
                                 int daysLeftUntilOutage = powerOutageUrls.IndexOf(url);
 
-                                SendMessageAsync(user.ChatId, $"Power outage will occur in {daysLeftUntilOutage} days in {user.DistrictName}, {user.StreetName}.")
+                                SendMessageAsync(user.ChatId, $"Power outage will occur in {daysLeftUntilOutage} days in {user.DistrictName}, {streetWithNumber}.")
                                     .GetAwaiter().GetResult();
                             }
                         }
