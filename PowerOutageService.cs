@@ -55,7 +55,7 @@ namespace PowerOutageNotifier
                         Task.Run(CheckAndNotifyPowerOutage);
                         Task.Run(CheckAndNotifyWaterOutage);
                         Task.Run(CheckAndNotifyUnplannedWaterOutage);
-                        Task.Run(CheckAndNotifyParkingTicket);
+                        Task.Run(CheckAndNotifyParkingTickets);
                         Thread.Sleep(TimeSpan.FromHours(1));
                     }
                     catch (Exception ex)
