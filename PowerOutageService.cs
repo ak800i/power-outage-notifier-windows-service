@@ -1,16 +1,15 @@
 ﻿using HtmlAgilityPack;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.ServiceProcess;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using Telegram.Bot.Args;
-using Telegram.Bot.Types;
 
 namespace PowerOutageNotifier
 {
@@ -205,6 +204,53 @@ namespace PowerOutageNotifier
                             }
                         }
                     }
+                }
+            }
+        }
+
+        public static void CheckAndNotifyParkingTickets()
+        {
+            string licensePlate = "BG677CJ";
+            string url = "https://www.parking-servis.co.rs/lat/edpk";
+            string searchKeyword = "NEMA EVIDENTIRANE ELEKTRONSKE";
+
+            // Set up ChromeDriver
+            ChromeOptions options = new ChromeOptions();
+            //options.AddArgument("--headless"); // Run in headless mode (without opening a browser window)
+            using (IWebDriver driver = new ChromeDriver(options))
+            {
+                driver.Navigate().GoToUrl(url);
+
+                // Find the input field and enter the license plate
+                IWebElement inputElement = driver.FindElement(By.CssSelector("input[name='fine']"));
+                inputElement.Clear();
+                inputElement.SendKeys(licensePlate);
+
+                // Find and click the submit button
+                IWebElement submitButton = driver.FindElement(By.CssSelector("button[type='submit']"));
+                submitButton.Click();
+
+                // Wait for the presence of the result message
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                By resultLocator = By.CssSelector("div.entry-text.no-edpk-message");
+                IWebElement resultElement = wait.Until(ExpectedConditions.ElementIsVisible(resultLocator));
+
+                // Check if the result element contains the keyword
+                if (resultElement.Text.Contains(searchKeyword))
+                {
+                    Console.WriteLine($"The keyword '{searchKeyword}' was found on the website.");
+                }
+                else
+                {
+                    SendMessageAsync(
+                        userDataList.Where(user => user.FriendlyName.Contains("Ajanko")).First().ChatId,
+                        $"There is a parking fine at {url}")
+                        .GetAwaiter().GetResult();
+
+                    SendMessageAsync(
+                        userDataList.Where(user => user.FriendlyName.Contains("Ajanko")).First().ChatId,
+                        licensePlate)
+                        .GetAwaiter().GetResult();
                 }
             }
         }
