@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace PowerOutageNotifier
 {
@@ -49,6 +50,7 @@ namespace PowerOutageNotifier
         protected override void OnStart(string[] args)
         {
             LogAsync($"Service running on {Environment.MachineName}").GetAwaiter().GetResult();
+            Task.Run(RecieveMessageAsync);
             Task.Run(() =>
             {
                 while (true)
@@ -85,21 +87,59 @@ namespace PowerOutageNotifier
             await botClient.SendTextMessageAsync(chatId, message);
         }
 
+        public static async Task DummyForTesting()
+        {
+            ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]
+            {
+                        new KeyboardButton[] { "Add/edit me", "Dummy" },
+                    })
+            {
+                ResizeKeyboard = true
+            };
+
+            Message sentMessage = await botClient.SendTextMessageAsync(
+                chatId: userDataList.First().ChatId,
+                text: "Choose a response",
+                replyMarkup: replyKeyboardMarkup,
+                cancellationToken: CancellationToken.None);
+        }
+
         private static async Task RecieveMessageAsync()
         {
             User me = await botClient.GetMeAsync();
             Console.WriteLine($"{me.Username} started");
 
+            int offset = 0;
+
             // start listening for incoming messages
             while (true)
             {
+
                 //get incoming messages
-                var updates = await botClient.GetUpdatesAsync();
+                var updates = await botClient.GetUpdatesAsync(offset);
                 foreach (var update in updates)
                 {
                     // send response to incoming message
-                    Console.WriteLine($"{update}");
-                    await LogAsync(update.ToString());
+                    Console.WriteLine($"{update.Message.Text}");
+                    /*
+                    await LogAsync(update.Message.Text);
+
+                    ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]
+                    {
+                        new KeyboardButton[] { "Help me", "Call me ☎️" },
+                    })
+                    {
+                        ResizeKeyboard = true
+                    };
+
+                    Message sentMessage = await botClient.SendTextMessageAsync(
+                        chatId: userDataList.First().ChatId,
+                        text: "Choose a response",
+                        replyMarkup: replyKeyboardMarkup,
+                        cancellationToken: CancellationToken.None);
+
+                    offset = update.Id + 1;
+                    */
                 }
             }
         }
