@@ -10,12 +10,15 @@ using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace PowerOutageNotifier
 {
     public partial class PowerOutageService : ServiceBase
     {
         private static readonly string telegramBotToken = ConfigReader.ReadBotToken();
+
+        private static readonly TelegramBotClient botClient = new TelegramBotClient(telegramBotToken);
 
         public static readonly List<UserData> userDataList = ConfigReader.ReadUserData();
 
@@ -45,7 +48,7 @@ namespace PowerOutageNotifier
 
         protected override void OnStart(string[] args)
         {
-            SendMessageAsync(userDataList.First().ChatId, $"Service running on {Environment.MachineName}").GetAwaiter().GetResult();
+            LogAsync($"Service running on {Environment.MachineName}").GetAwaiter().GetResult();
             Task.Run(() =>
             {
                 while (true)
@@ -60,7 +63,7 @@ namespace PowerOutageNotifier
                     catch (Exception ex)
                     {
                         // just continue
-                        SendMessageAsync(userDataList.First().ChatId, $"Exception {ex}").GetAwaiter().GetResult();
+                        LogAsync($"Exception {ex}").GetAwaiter().GetResult();
                     }
                 }
             });
@@ -68,13 +71,36 @@ namespace PowerOutageNotifier
 
         protected override void OnStop()
         {
-            SendMessageAsync(userDataList.First().ChatId, $"Service stopping on {Environment.MachineName}").GetAwaiter().GetResult();
+            LogAsync($"Service stopping on {Environment.MachineName}").GetAwaiter().GetResult();
+        }
+
+        private static async Task LogAsync(string message)
+        {
+            await botClient.SendTextMessageAsync(userDataList.First().ChatId, message);
         }
 
         private static async Task SendMessageAsync(long chatId, string message)
         {
-            TelegramBotClient botClient = new TelegramBotClient(telegramBotToken);
             await botClient.SendTextMessageAsync(chatId, message);
+        }
+
+        private static async Task RecieveMessageAsync()
+        {
+            User me = await botClient.GetMeAsync();
+            Console.WriteLine($"{me.Username} started");
+
+            // start listening for incoming messages
+            while (true)
+            {
+                //get incoming messages
+                var updates = await botClient.GetUpdatesAsync();
+                foreach (var update in updates)
+                {
+                    // send response to incoming message
+                    Console.WriteLine($"{update}");
+                    await LogAsync(update.ToString());
+                }
+            }
         }
 
         public static void CheckAndNotifyPowerOutage()
