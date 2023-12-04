@@ -365,3 +365,4 @@ FodyWeavers.xsd
 # Ignore the persistant-storage files
 /bot-token.txt
 /userdata.csv
+/InstallUtil.InstallLog
