@@ -6,7 +6,7 @@ A Windows service, written in .NET Framework 4.8 to send Telegram notifications 
 3. an unplanned water outage occurs in Belgrade, Serbia
 4. a parking fine is received in Belgrade, Serbia
 
-## Install
+## Quick Install
 
 1. Say "hi" to https://t.me/PowerOutageNotifierSrbijaBot
 2. Send "/my_id" to https://t.me/get_id_bot  
@@ -18,4 +18,6 @@ Example: Your Chat ID = 123456
 7. Build the project
 8. From an admin console run install.bat  
 Note: install.bat uses installutil, which needs to be installed beforehand. This tool is automatically installed with Visual Studio.
-9. Double-check in Services that the PowerOutageNotifier is running and that the startup is set to "automatic"
+
+10. Double-check in Services that the PowerOutageNotifier is running and that the startup is set to "automatic"
+11. Win+R services.msc
