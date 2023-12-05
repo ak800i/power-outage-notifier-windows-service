@@ -16,5 +16,5 @@ Example: Your Chat ID = 123456
 5. Replace the "Палилула" and "САВЕ МРКАЉА" with your own District Name and Street Name
 6. Rename userdata.example.csv to userdata.csv
 7. Build the project
-8. From an admin console run install.bat
+8. From an admin console run install.bat  
 Note: install.bat uses installutil, which needs to be installed beforehand. This tool is automatically installed with Visual Studio.
