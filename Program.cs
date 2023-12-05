@@ -15,6 +15,7 @@ namespace PowerOutageNotifier
         /// </summary>
         static void Main()
         {
+            // PowerOutageService.DummyForTesting().GetAwaiter().GetResult();
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
