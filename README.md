@@ -6,10 +6,10 @@ A Windows service, written in .NET Framework 4.8 to send Telegram notifications 
 3. an unplanned water outage occurs in Belgrade, Serbia
 4. a parking fine is received in Belgrade, Serbia
 
-## Quick Install
+## Quick Setup and Install
 
 1. Follow [these](https://www.directual.com/lesson-library/how-to-create-a-telegram-bot) instructions to create your own bot
-1. Send "/token" to BotFather to obtain the token for your bot and paste the token into the `bot-token.example.txt` file
+1. Send "/token" to BotFather to obtain the token for your bot and replace the token in the `bot-token.example.txt` file
 1. Rename the `bot-token.example.txt` file to `bot-token.txt`
 1. Send "/my_id" to https://t.me/get_id_bot  
 Note down your Chat ID which the bot will tell you  
