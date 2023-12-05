@@ -18,3 +18,4 @@ Example: Your Chat ID = 123456
 7. Build the project
 8. From an admin console run install.bat  
 Note: install.bat uses installutil, which needs to be installed beforehand. This tool is automatically installed with Visual Studio.
+9. Double-check in Services that the PowerOutageNotifier is running and that the startup is set to "automatic"
