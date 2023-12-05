@@ -8,6 +8,13 @@ A Windows service, written in .NET Framework 4.8 to send Telegram notifications 
 
 ## Install
 
-1. Edit userdata.example.csv as needed and rename it to userdata.csv
-2. Install it by running install.bat  
-Note: install.bat uses installutil, which needs to be installed beforehand.
+1. Say "hi" to https://t.me/PowerOutageNotifierSrbijaBot
+2. Send "/my_id" to https://t.me/get_id_bot  
+Note down you Chat ID which the bot will tell you  
+Example: Your Chat ID = 123456
+4. In userdata.example.csv, replace 123456 with your Chat ID
+5. Replace the "Палилула" and "САВЕ МРКАЉА" with your own District Name and Street Name
+6. Rename userdata.example.csv to userdata.csv
+7. Build the project
+8. Install it by running install.bat
+Note: install.bat uses installutil, which needs to be installed beforehand. This tool is automatically installed with Visual Studio.
